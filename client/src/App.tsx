@@ -1,18 +1,16 @@
-import React, { useEffect } from 'react'
-import './App.scss'
-import SpinName from './Components/SpinName';
-import ModalCongratulation from './Components/ModalCongratulation/ModalCongratulation';
-import axios from 'axios';
 import type { PopconfirmProps } from 'antd';
 import { Button, message, Popconfirm } from 'antd';
+import axios from 'axios';
+import React, { useEffect } from 'react';
+import './App.scss';
+import ModalCongratulation from './Components/ModalCongratulation/ModalCongratulation';
+import SpinName from './Components/SpinName';
 export interface DataUser {
   Id?: number;
+  Email?: string;
   FullName?: string;
-  AccountName?: string;
-  DonVi?: string;
-  Ho?: string;
-  Dem?: string;
-  Ten?: string;
+  Avatar?: string;
+  WishForES?: string;
   Giai?: number;
 }
 
@@ -25,13 +23,29 @@ function App() {
 
 
   const [currentLuckyUser, setCurrentLuckyUser] = React.useState<DataUser>({});
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [fakingLuckyUser, setFakingLuckyUser] = React.useState<any>({});
 
 
   const [playing, setPlaying] = React.useState<boolean>(false);
 
   const [openModal, setOpenModal] = React.useState<boolean>(false);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loading, setLoading] = React.useState<boolean>(false);
+
+  const getPartName = React.useCallback((fullName?: string, part?: string) => {
+    const [Ten, Ho, ...Dem] = fullName?.split(' ') || [];
+    if (part === 'Ten') {
+      return Ten;
+    }
+    if (part === 'Ho') {
+      return Ho;
+    }
+    if (part === 'Dem') {
+      return Dem.join(' ');
+    }
+  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -41,14 +55,15 @@ function App() {
       const listDemTmp: string[] = [];
       const listTenTmp: string[] = [];
       data.map((user: DataUser) => {
-        if (user.Ho && !listHoTmp.includes(user.Ho)) {
-          listHoTmp.push(user.Ho);
+        const [Ten, Ho, ...Dem] = user.FullName?.split(' ') || [];
+        if (Ho && !listHoTmp.includes(Ho)) {
+          listHoTmp.push(Ho);
         }
-        if (user.Dem && !listDemTmp.includes(user.Dem)) {
-          listDemTmp.push(user.Dem);
+        if (Dem && !listDemTmp.includes(Dem.join(' '))) {
+          listDemTmp.push(Dem.join(' '));
         }
-        if (user.Ten && !listTenTmp.includes(user.Ten)) {
-          listTenTmp.push(user.Ten);
+        if (Ten && !listTenTmp.includes(Ten)) {
+          listTenTmp.push(Ten);
         }
       });
       setListHo(listHoTmp);
@@ -70,24 +85,30 @@ function App() {
       if (typeof response.data === "string") {
         message.error(response.data);
       } else {
-        setCurrentLuckyUser({});
-        setPlaying(true);
         const luckyData = response.data;
+        setCurrentLuckyUser(luckyData);
+        setFakingLuckyUser({})
+        setPlaying(true);
+
         let luckyUser = {};
         setTimeout(() => {
           luckyUser = {
-            Ho: luckyData?.Ho,
+            Ho: getPartName(luckyData?.FullName, "Ho"),
           }
-          setCurrentLuckyUser(luckyUser);
+          setFakingLuckyUser(luckyUser);
           setTimeout(() => {
             luckyUser = {
-              Ho: luckyData?.Ho,
-              Dem: luckyData?.Dem,
+              Ho: getPartName(luckyData?.FullName, "Ho"),
+              Dem: getPartName(luckyData?.FullName, "Dem"),
             }
-            setCurrentLuckyUser(luckyUser);
+            setFakingLuckyUser(luckyUser);
             setTimeout(() => {
-              luckyUser = luckyData;
-              setCurrentLuckyUser(luckyUser);
+              luckyUser = {
+                Ho: getPartName(luckyData?.FullName, "Ho"),
+                Dem: getPartName(luckyData?.FullName, "Dem"),
+                Ten: getPartName(luckyData?.FullName, "Ten"),
+              }
+              setFakingLuckyUser(luckyUser);
               setPlaying(false);
               setOpenModal(true);
             }, 1000)
@@ -150,14 +171,14 @@ function App() {
           <div className='app-block-name'>
             <div className='app-block-each-name'>
               <div className='draw-name'>
-                <SpinName playing={playing} listData={listHo} valueSelected={currentLuckyUser.Ho} placeholder='Họ' />
+                <SpinName playing={playing} listData={listHo} valueSelected={fakingLuckyUser?.Ho} placeholder='Họ' />
               </div>
             </div>
             <div className='app-block-each-name'>
-              <div className='draw-name'> <SpinName playing={playing} listData={listDem} valueSelected={currentLuckyUser.Dem} placeholder="Đệm" /></div>
+              <div className='draw-name'> <SpinName playing={playing} listData={listDem} valueSelected={fakingLuckyUser?.Dem} placeholder="Đệm" /></div>
             </div>
             <div className='app-block-each-name'>
-              <div className='draw-name'><SpinName playing={playing} listData={listTen} valueSelected={currentLuckyUser.Ten} placeholder="Tên" /></div>
+              <div className='draw-name'><SpinName playing={playing} listData={listTen} valueSelected={fakingLuckyUser?.Ten} placeholder="Tên" /></div>
             </div>
           </div>
           <div className='random-button' onClick={() => handleClickStart()}>Quay</div>

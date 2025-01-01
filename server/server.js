@@ -39,7 +39,7 @@ function getRandomLuckyUser(allData,selectedData) {
 
 // // API endpoint to get data from Excel file
 app.get('/list-user', (req, res) => {
-    const filePath = path.join(__dirname, 'Data2025.xlsx');
+    const filePath = path.join(__dirname, 'Data2025/Data2025/Checkin_2025.xlsx');
     try {
         const data = readExcelData(filePath);
         res.json(data);
@@ -76,7 +76,7 @@ app.post('/update-lucky-user', (req, res) => {
 });
 
 app.get('/get-lucky-user', (req, res) => {
-    const filePath = path.join(__dirname, 'Data2025.xlsx');
+    const filePath = path.join(__dirname, 'Data2025/Data2025/Checkin_2025.xlsx');
     try {
         const dataAll = readExcelData(filePath);
         fs.readFile('./SelectedUser.json', function(err, data) { 
