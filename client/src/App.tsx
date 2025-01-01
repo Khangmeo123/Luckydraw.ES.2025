@@ -3,6 +3,8 @@ import './App.scss'
 import SpinName from './Components/SpinName';
 import ModalCongratulation from './Components/ModalCongratulation/ModalCongratulation';
 import axios from 'axios';
+import type { PopconfirmProps } from 'antd';
+import { Button, message, Popconfirm } from 'antd';
 export interface DataUser {
   ID?: number;
   FullName?: string;
@@ -66,7 +68,7 @@ function App() {
   const handleClickStart = React.useCallback(() => {
     axios.get("http://localhost:5000/get-lucky-user").then(response => {
       if (typeof response.data === "string") {
-        alert(response.data)
+        message.error(response.data);
       } else {
         setCurrentLuckyUser({});
         setPlaying(true);
@@ -103,13 +105,16 @@ function App() {
         axios.get("http://localhost:5000/list-lucky-user").then((response) => {
           setListLuckyUser(response.data);
           setLoading(false);
+          message.success('Cập nhật thành công');
         }).catch(() => {
           setLoading(false);
         })
       } else {
+        message.error('Cập nhật thất bại');
         setLoading(false);
       }
     }).catch(() => {
+      message.error('Cập nhật thất bại');
       setLoading(false);
     });
     setOpenModal(false);
@@ -117,7 +122,23 @@ function App() {
 
   const handleCancel = React.useCallback(() => {
     setOpenModal(false);
-  }, [])
+  }, []);
+
+  const confirm: PopconfirmProps['onConfirm'] = () => {
+    setLoading(true);
+    axios.get("http://localhost:5000/reset").then((response) => {
+      setListLuckyUser([]);
+      if (response.data) {
+        message.success('Reset dữ liệu thành công');
+      } else {
+        message.error('Reset dữ liệu thất bại');
+      }
+      setLoading(false);
+    }).catch(() => {
+      message.error('Reset dữ liệu thất bại');
+      setLoading(false);
+    })
+  };
 
 
   return (
@@ -150,6 +171,19 @@ function App() {
                 <div className='user-name'>{luckyUser?.FullName}</div>
               </div>
             }) : <></>}
+          </div>
+
+          <div className="footer-action-reset">
+            <Popconfirm
+              title="Reset dữ liệu"
+              description="Bạn có chắc chắn muốn reset dữ liệu?"
+              onConfirm={confirm}
+              okText="Xác nhận"
+              cancelText="Huỷ"
+
+            >
+              <Button danger>Reset</Button>
+            </Popconfirm>
           </div>
         </div>
       </div>

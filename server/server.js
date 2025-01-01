@@ -118,13 +118,30 @@ app.get('/list-lucky-user', (req, res) => {
     }
 });
 
-// // API endpoint to get data from Excel file
-app.get('/list-selected-user', (req, res) => {
-    fs.readFile('./SelectedUser.json', function(err, data) { 
-        if (err) throw err; 
-        const listSelectedUser  = JSON.parse(data);
-        res.json(listSelectedUser);
-    });
+app.get('/reset', (req, res) => {
+    const data = [];
+    dataJson = JSON.stringify(data);
+    try {
+        fs.writeFile('./SelectedUser.json',dataJson, 'utf-8',
+            (err) => {
+                if (err) {
+                    console.log('Error writing file:', err);
+                } else {
+                    console.log('Successfully wrote file');
+            }
+        });
+        fs.writeFile('./LuckyUser.json',dataJson, 'utf-8',
+            (err) => {
+                if (err) {
+                    console.log('Error writing file:', err);
+                } else {
+                    console.log('Successfully wrote file');
+            }
+        });
+        res.json(true);
+    } catch (error) {
+        res.status(500).send('Error when reset data');
+    }
 });
 
 
