@@ -26,9 +26,9 @@ function getRandomLuckyUser(allData,selectedData) {
     min = Math.ceil(0);
     max = Math.floor(allData?.length - 1);
     const nums = [];
-    const listSelectedId = selectedData?.map(p => Number(p?.ID));
+    const listSelectedId = selectedData?.map(p => Number(p?.Id));
     for (let i = min; i <= max; i++) {
-        if (!listSelectedId.includes(allData[i].ID)) nums.push(i);
+        if (!listSelectedId.includes(allData[i].Id)) nums.push(i);
     }
      if (nums.length === 0) return false;
      const randomIndex = Math.floor(Math.random() * nums.length);

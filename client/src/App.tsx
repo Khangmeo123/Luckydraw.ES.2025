@@ -6,7 +6,7 @@ import axios from 'axios';
 import type { PopconfirmProps } from 'antd';
 import { Button, message, Popconfirm } from 'antd';
 export interface DataUser {
-  ID?: number;
+  Id?: number;
   FullName?: string;
   AccountName?: string;
   DonVi?: string;
@@ -166,7 +166,7 @@ function App() {
           <div className='title'>Danh sách trúng thưởng</div>
           <div className="list-user">
             {listLuckyUser?.length > 0 ? listLuckyUser?.map((luckyUser, index) => {
-              return <div className="user-lucky" key={luckyUser?.ID}>
+              return <div className="user-lucky" key={luckyUser?.Id}>
                 <div className="stt">{index + 1}</div>
                 <div className='user-name'>{luckyUser?.FullName}</div>
               </div>
