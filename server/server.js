@@ -75,7 +75,6 @@ app.post('/update-lucky-user', (req, res) => {
     }
 });
 
-// // API endpoint to get data from Excel file
 app.get('/get-lucky-user', (req, res) => {
     const filePath = path.join(__dirname, 'Data2025.xlsx');
     try {
@@ -95,14 +94,27 @@ app.get('/get-lucky-user', (req, res) => {
                             console.log('Error writing file:', err);
                         } else {
                             console.log('Successfully wrote file');
-                        }
-                        }
-            )
-            }
-            
+                    }
+                }
+            )}  
         }); 
     } catch (error) {
         res.status(500).send('Error reading Excel file');
+    }
+});
+
+// // API endpoint to get data from Excel file
+app.get('/list-lucky-user', (req, res) => {
+    try {
+        fs.readFile('./LuckyUser.json', function(err, data) { 
+            const listLuckyUser  = JSON.parse(data);
+            if (err) throw err;
+            else {
+                res.json(listLuckyUser);
+            }  
+        }); 
+    } catch (error) {
+        res.status(500).send('Error reading data');
     }
 });
 
@@ -113,20 +125,6 @@ app.get('/list-selected-user', (req, res) => {
         const listSelectedUser  = JSON.parse(data);
         res.json(listSelectedUser);
     });
-});
-
-// // API endpoint to get data from Excel file
-app.get('/list-lucky-user', (req, res) => {
-    fs.readFile('./LuckyUser.json', function(err, data) { 
-        if (err) throw err; 
-        const listSelectedUser  = JSON.parse(data);
-        res.json(listSelectedUser);
-    });
-});
-
-
-app.get('/test', (req, res) => {
-    res.json({animals: ["con","cho","dom"]})
 });
 
 

@@ -11,11 +11,12 @@ export interface DataUser {
   Ho?: string;
   Dem?: string;
   Ten?: string;
+  Giai?: number;
 }
 
 function App() {
   // const [count, setCount] = useState(0);
-  // const [listData, setListData] = React.useState<DataUser[]>([]);
+  const [listLuckyUser, setListLuckyUser] = React.useState<DataUser[]>([]);
   const [listHo, setListHo] = React.useState<string[]>([]);
   const [listDem, setListDem] = React.useState<string[]>([]);
   const [listTen, setListTen] = React.useState<string[]>([]);
@@ -28,11 +29,12 @@ function App() {
 
   const [openModal, setOpenModal] = React.useState<boolean>(false);
 
+  const [loading, setLoading] = React.useState<boolean>(false);
+
   useEffect(() => {
+    setLoading(true);
     axios.get("http://localhost:5000/list-user").then(response => {
       const data = response.data;
-      // setListData(data);
-      console.log("data", data);
       const listHoTmp: string[] = [];
       const listDemTmp: string[] = [];
       const listTenTmp: string[] = [];
@@ -51,41 +53,64 @@ function App() {
       setListDem(listDemTmp);
       setListTen(listTenTmp);
     });
+    axios.get("http://localhost:5000/list-lucky-user").then((response) => {
+      setListLuckyUser(response.data);
+      setLoading(false);
+    }).catch(() => {
+      setLoading(false);
+    })
   }, []);
 
 
 
   const handleClickStart = React.useCallback(() => {
-    setPlaying(true);
-    setCurrentLuckyUser({});
     axios.get("http://localhost:5000/get-lucky-user").then(response => {
-      const luckyData = response.data;
-      let luckyUser = {};
-      setTimeout(() => {
-        luckyUser = {
-          Ho: luckyData?.Ho,
-        }
-        setCurrentLuckyUser(luckyUser);
+      if (typeof response.data === "string") {
+        alert(response.data)
+      } else {
+        setCurrentLuckyUser({});
+        setPlaying(true);
+        const luckyData = response.data;
+        let luckyUser = {};
         setTimeout(() => {
           luckyUser = {
             Ho: luckyData?.Ho,
-            Dem: luckyData?.Dem,
           }
           setCurrentLuckyUser(luckyUser);
           setTimeout(() => {
-            luckyUser = luckyData;
+            luckyUser = {
+              Ho: luckyData?.Ho,
+              Dem: luckyData?.Dem,
+            }
             setCurrentLuckyUser(luckyUser);
-            setPlaying(false);
-            setOpenModal(true);
-          }, 1000)
+            setTimeout(() => {
+              luckyUser = luckyData;
+              setCurrentLuckyUser(luckyUser);
+              setPlaying(false);
+              setOpenModal(true);
+            }, 1000)
+          }, 1000);
         }, 1000);
-      }, 1000);
+      }
+
     })
   }, []);
 
   const handleSave = React.useCallback((luckyUser: DataUser) => {
+    setLoading(true);
     axios.post("http://localhost:5000/update-lucky-user", luckyUser).then(response => {
-      console.log("update done", response.data);
+      if (response.data === true) {
+        axios.get("http://localhost:5000/list-lucky-user").then((response) => {
+          setListLuckyUser(response.data);
+          setLoading(false);
+        }).catch(() => {
+          setLoading(false);
+        })
+      } else {
+        setLoading(false);
+      }
+    }).catch(() => {
+      setLoading(false);
     });
     setOpenModal(false);
   }, []);
@@ -119,22 +144,12 @@ function App() {
         <div className="list-lucky-user">
           <div className='title'>Danh sách trúng thưởng</div>
           <div className="list-user">
-            <div className="user-lucky">
-              <div className="stt">1</div>
-              <div className='user-name'>Đinh Minh Khang</div>
-            </div>
-            <div className="user-lucky">
-              <div className="stt">2</div>
-              <div className='user-name'>Nguyễn Huy Fuck Đạt</div>
-            </div>
-            <div className="user-lucky">
-              <div className="stt">3</div>
-              <div className='user-name'>Nguyễn Khánh Duy</div>
-            </div>
-            <div className="user-lucky">
-              <div className="stt">4</div>
-              <div className='user-name'>Nguyễn Kiên Cường</div>
-            </div>
+            {listLuckyUser?.length > 0 ? listLuckyUser?.map((luckyUser, index) => {
+              return <div className="user-lucky" key={luckyUser?.ID}>
+                <div className="stt">{index + 1}</div>
+                <div className='user-name'>{luckyUser?.FullName}</div>
+              </div>
+            }) : <></>}
           </div>
         </div>
       </div>
