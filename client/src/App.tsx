@@ -81,12 +81,16 @@ function App() {
   }, []);
 
 
+  const x = document.getElementById("myAudio");
+
 
   const handleClickStart = React.useCallback(() => {
     axios.get("http://localhost:5000/get-lucky-user").then(response => {
       if (typeof response.data === "string") {
         message.error(response.data);
       } else {
+        (x as HTMLAudioElement).currentTime = 0;
+        (x as HTMLAudioElement)?.play();
         const luckyData = response.data;
         setCurrentLuckyUser(luckyData);
         setFakingLuckyUser({})
@@ -113,13 +117,13 @@ function App() {
               setFakingLuckyUser(luckyUser);
               setPlaying(false);
               setOpenModal(true);
-            }, 1000)
-          }, 1000);
-        }, 1000);
+              (x as HTMLAudioElement)?.pause();
+            }, 2000);
+          }, 4000);
+        }, 10000);
       }
-
     })
-  }, [getPartName]);
+  }, [getPartName, x]);
 
   const handleSave = React.useCallback((luckyUser: DataUser) => {
     setLoading(true);
@@ -166,20 +170,21 @@ function App() {
 
   return (
     <div className='app-container'>
+
       <div className='app-background'>
       </div>
       <div className='app-content'>
         <div className='app-block-draw'>
           <div className='app-block-name'>
-            <div className='app-block-each-name'>
+            <div className='app-block-each-name' style={{ borderColor: fakingLuckyUser?.Ho ? 'orange' : 'gray' }}>
               <div className='draw-name'>
                 <SpinName playing={playing} listData={listHo} valueSelected={fakingLuckyUser?.Ho} placeholder='Họ' />
               </div>
             </div>
-            <div className='app-block-each-name'>
+            <div className='app-block-each-name' style={{ borderColor: fakingLuckyUser?.Dem ? 'orange' : 'gray' }}>
               <div className='draw-name'> <SpinName playing={playing} listData={listDem} valueSelected={fakingLuckyUser?.Dem} placeholder="Đệm" /></div>
             </div>
-            <div className='app-block-each-name'>
+            <div className='app-block-each-name' style={{ borderColor: fakingLuckyUser?.Ten ? 'orange' : 'gray' }}>
               <div className='draw-name'><SpinName playing={playing} listData={listTen} valueSelected={fakingLuckyUser?.Ten} placeholder="Tên" /></div>
             </div>
           </div>
@@ -212,6 +217,10 @@ function App() {
         </div>
       </div>
       <ModalCongratulation isOpen={openModal} currentLuckyUser={currentLuckyUser} handleSave={() => handleSave(currentLuckyUser)} handleCancel={() => handleCancel()} />
+      <audio id="myAudio">
+        <source src="./xsmb.mp3" type="audio/mpeg" />
+        Your browser does not support the audio element.
+      </audio>
     </div>
   )
 }

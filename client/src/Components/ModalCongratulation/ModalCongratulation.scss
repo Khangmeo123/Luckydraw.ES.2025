@@ -1,4 +1,6 @@
 .modal-congratulation {
+    padding-top: 40px;
+
     .ant-modal-title {
         font-size: 30px;
     }
@@ -38,8 +40,14 @@
                 white-space: pre-wrap;
             }
 
+            .info-field {
+                margin-top: 12px;
+                padding-top: 4px;
+            }
+
             .info-user {
-                margin-top: 6px;
+                margin-top: 12px;
+                font-size: 18px;
             }
 
             .lucky-prize {

@@ -24,7 +24,7 @@ const SpinName = (props: SpinNameProps) => {
             intervalId = setInterval(() => {
                 setDisplayedName(listData[currentNameIndex]);
                 setCurrentNameIndex((prevIndex) => prevIndex === (listData?.length - 1) ? prevIndex = 0 : prevIndex += 1);
-            }, 100);
+            }, 150);
         }
 
         return () => clearInterval(intervalId); // Clear interval on unmount or dependency change
@@ -34,7 +34,7 @@ const SpinName = (props: SpinNameProps) => {
 
 
     return (
-        <div className='spin-name__container'>
+        <div className='spin-name__container' style={{ color: valueSelected ? 'red' : 'black' }}>
             {valueSelected ? valueSelected : displayedName}
         </div>
     );

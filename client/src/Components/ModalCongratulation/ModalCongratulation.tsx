@@ -49,13 +49,14 @@ function ModalCongratulation(props: ModalCongratulationProps) {
     return (
         <>
             <Modal width={800}
-                title="Congratulations!"
+                // title="Congratulations!"
                 open={isOpen}
                 onOk={handleSave}
                 onCancel={handleCancel}
                 className='modal-congratulation'
                 cancelText='Không nhận giải'
                 okText='Nhận giải'
+                closeIcon={null}
             >
                 <div className='modal-congratulation__content'>
                     <div className='avatar-block'>
@@ -65,19 +66,19 @@ function ModalCongratulation(props: ModalCongratulationProps) {
                         <div className='wish-for-es'>Lời chúc: {currentLuckyUser?.WishForES}</div>
 
                         <Row>
-                            <Col span={8} className='info-user'>
+                            <Col span={8} className='info-field'>
                                 Chúc mừng:
                             </Col>
                             <Col span={16} className='info-user'>
                                 {Ho + " " + Dem + " " + Ten}
                             </Col>
-                            <Col span={8} className='info-user'>
+                            <Col span={8} className='info-field'>
                                 Email:
                             </Col>
                             <Col span={16} className='info-user'>
                                 {currentLuckyUser?.Email}
                             </Col>
-                            <Col span={8} className='info-user'>
+                            <Col span={8} className='info-field'>
                                 Thời gian checkin:
                             </Col>
                             <Col span={16} className='info-user'>
