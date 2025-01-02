@@ -11,7 +11,9 @@ export interface DataUser {
   FullName?: string;
   Avatar?: string;
   WishForES?: string;
-  Giai?: number;
+  Giai?: string;
+  Checkin?: number;
+  Checkout?: number;
 }
 
 function App() {
@@ -117,7 +119,7 @@ function App() {
       }
 
     })
-  }, []);
+  }, [getPartName]);
 
   const handleSave = React.useCallback((luckyUser: DataUser) => {
     setLoading(true);
@@ -187,9 +189,10 @@ function App() {
           <div className='title'>Danh sách trúng thưởng</div>
           <div className="list-user">
             {listLuckyUser?.length > 0 ? listLuckyUser?.map((luckyUser, index) => {
+              const [Ten, Ho, ...Dem] = luckyUser?.FullName?.split(' ') || [];
               return <div className="user-lucky" key={luckyUser?.Id}>
                 <div className="stt">{index + 1}</div>
-                <div className='user-name'>{luckyUser?.FullName}</div>
+                <div className='user-name'>{Ho + " " + Dem + " " + Ten}</div>
               </div>
             }) : <></>}
           </div>

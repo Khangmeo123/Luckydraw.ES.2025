@@ -1,0 +1,54 @@
+.modal-congratulation {
+    .ant-modal-title {
+        font-size: 30px;
+    }
+
+    .modal-congratulation__content {
+        display: flex;
+        align-items: start;
+        justify-content: center;
+        gap: 40px;
+
+        .avatar-block {
+            width: 300px;
+            height: auto;
+
+            .avatar {
+                width: 300px;
+                height: auto;
+                border-radius: 2;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: contain;
+            }
+        }
+
+        .information-block {
+            width: calc(100% - 300px);
+            height: 100%;
+            font-size: 18px;
+            color: #000;
+            font-weight: 500;
+
+            .wish-for-es {
+                font-size: 24px;
+                font-weight: 600;
+                color: #000;
+                margin-bottom: 10px;
+                white-space: pre-wrap;
+            }
+
+            .info-user {
+                margin-top: 6px;
+            }
+
+            .lucky-prize {
+                margin-top: 20px;
+                font-size: 20px;
+                width: 100%;
+                text-align: center;
+            }
+        }
+    }
+
+}
