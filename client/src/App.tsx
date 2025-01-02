@@ -117,7 +117,6 @@ function App() {
               setFakingLuckyUser(luckyUser);
               setPlaying(false);
               setOpenModal(true);
-              (x as HTMLAudioElement)?.pause();
             }, 2000);
           }, 4000);
         }, 10000);
@@ -188,7 +187,10 @@ function App() {
               <div className='draw-name'><SpinName playing={playing} listData={listTen} valueSelected={fakingLuckyUser?.Ten} placeholder="Tên" /></div>
             </div>
           </div>
-          <div className='random-button' onClick={() => handleClickStart()}>Quay</div>
+          <div className='random-button' >
+            <Button type="link" size='large' disabled={playing} onClick={() => handleClickStart()}>Quay thưởng</Button>
+          </div>
+
         </div>
         <div className="list-lucky-user">
           <div className='title'>Danh sách trúng thưởng</div>

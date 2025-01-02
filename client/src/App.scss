@@ -50,7 +50,7 @@
           border: 8px solid gray;
 
           .draw-name {
-            font-size: 30px;
+            font-size: 28px;
             font-weight: 600;
           }
         }
@@ -59,17 +59,23 @@
       .random-button {
         margin-top: 200px;
         font-size: 23px;
-        height: 56px;
+        // height: 56px;
         font-weight: 600;
         // padding: 6px 16px;
-        padding-left: 24px;
-        padding-right: 24px;
+        // padding-left: 24px;
+        // padding-right: 24px;
         display: flex;
         align-items: center;
         justify-content: center;
         background-color: white;
         color: black;
         border-radius: 12px;
+
+        button {
+          font-size: 20px;
+          font-weight: 600;
+          padding: 28px 32px;
+        }
 
         &:hover {
           cursor: pointer;
