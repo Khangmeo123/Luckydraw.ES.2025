@@ -20,9 +20,6 @@ function ModalCongratulation(props: ModalCongratulationProps) {
         handleCancel,
     } = props;
 
-    const [Ten, Ho, ...Dem] = React.useMemo(() => {
-        return currentLuckyUser?.FullName?.split(' ') || [];
-    }, [currentLuckyUser]);
 
     function excelDateToJSDate(excelDate: number) {
         // Kiểm tra xem có phải là số hay không
@@ -44,6 +41,30 @@ function ModalCongratulation(props: ModalCongratulationProps) {
         return jsDate;
     }
 
+    const formatFullName = React.useCallback((fullName?: string) => {
+        if (fullName?.length) {
+            const [Ten, Ho, ...Dem] = fullName?.split(' ') || [];
+            return Ho + " " + `${Dem?.length > 1 ? Dem.join(' ') : Dem}` + " " + Ten;
+        }
+    }, []);
+
+    const formatPrize = React.useCallback((prize?: string) => {
+        switch (prize) {
+            case 'best':
+                return 'Giải đặc biệt';
+            case '1st':
+                return 'Giải nhất';
+            case '2nd':
+                return 'Giải nhì';
+            case '3rd':
+                return 'Giải ba';
+            case '4th':
+                return 'Giải khuyến khích';
+            default:
+                return 'Giải khuyến khích';
+        }
+    }, []);
+
 
 
     return (
@@ -63,14 +84,14 @@ function ModalCongratulation(props: ModalCongratulationProps) {
                         <img src={`./Data2025/${currentLuckyUser?.Avatar}`} alt='avatar' className='avatar' />
                     </div>
                     <div className='information-block'>
-                        <div className='wish-for-es'>Lời chúc: {currentLuckyUser?.WishForES}</div>
+                        <div className='lucky-prize'>{formatPrize(currentLuckyUser?.Giai)}</div>
 
                         <Row>
                             <Col span={8} className='info-field'>
                                 Chúc mừng:
                             </Col>
                             <Col span={16} className='info-user'>
-                                {Ho + " " + Dem + " " + Ten}
+                                {formatFullName(currentLuckyUser?.FullName)}
                             </Col>
                             <Col span={8} className='info-field'>
                                 Email:
@@ -84,8 +105,15 @@ function ModalCongratulation(props: ModalCongratulationProps) {
                             <Col span={16} className='info-user'>
                                 {excelDateToJSDate(currentLuckyUser?.Checkin || 0)?.toLocaleString()}
                             </Col>
+                            <Col span={8} className='info-field'>
+                                Lời chúc:
+                            </Col>
+                            <Col span={16} className='info-user'>
+                                {"Chúc cho ES một năm 2025 thành công rực rỡ trên mọi mặt trận, chúc cho các ESer được thưởng thật nhiều <3"}
+                            </Col>
                         </Row>
-                        <div className='lucky-prize'>{currentLuckyUser?.Giai || "Giải khuyến khích"}</div>
+
+
                     </div>
                 </div>
 

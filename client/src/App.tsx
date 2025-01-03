@@ -49,6 +49,13 @@ function App() {
     }
   }, []);
 
+  const formatFullName = React.useCallback((fullName?: string) => {
+    if (fullName?.length) {
+      const [Ten, Ho, ...Dem] = fullName?.split(' ') || [];
+      return Ho + " " + `${Dem?.length > 1 ? Dem.join(' ') : Dem}` + " " + Ten;
+    }
+  }, []);
+
   useEffect(() => {
     setLoading(true);
     axios.get("http://localhost:5000/list-user").then(response => {
@@ -166,6 +173,37 @@ function App() {
     })
   };
 
+  const giaiThuong = React.useMemo(() => {
+    const giaidacbiet = listLuckyUser.filter(user => user.Giai === 'best')[0];
+    const giainhat = listLuckyUser.filter(user => user.Giai === '1st')[0];
+    const giainhi1 = listLuckyUser.filter(user => user.Giai === '2nd')[0];
+    const giainhi2 = listLuckyUser.filter(user => user.Giai === '2nd')[1];
+    const giaiba1 = listLuckyUser.filter(user => user.Giai === '3rd')[0];
+    const giaiba2 = listLuckyUser.filter(user => user.Giai === '3rd')[1];
+    const giaiba3 = listLuckyUser.filter(user => user.Giai === '3rd')[2];
+    const giaibon1 = listLuckyUser.filter(user => user.Giai === '4th')[0];
+    const giaibon2 = listLuckyUser.filter(user => user.Giai === '4th')[1];
+    const giaibon3 = listLuckyUser.filter(user => user.Giai === '4th')[2];
+    const giaibon4 = listLuckyUser.filter(user => user.Giai === '4th')[3];
+    const giaibon5 = listLuckyUser.filter(user => user.Giai === '4th')[4];
+    const giaibon6 = listLuckyUser.filter(user => user.Giai === '4th')[5];
+    return {
+      giaidacbiet,
+      giainhat,
+      giainhi1,
+      giainhi2,
+      giaiba1,
+      giaiba2,
+      giaiba3,
+      giaibon1,
+      giaibon2,
+      giaibon3,
+      giaibon4,
+      giaibon5,
+      giaibon6,
+    }
+  }, [listLuckyUser])
+
 
   return (
     <div className='app-container'>
@@ -188,20 +226,72 @@ function App() {
             </div>
           </div>
           <div className='random-button' >
-            <Button type="link" size='large' disabled={playing} onClick={() => handleClickStart()}>Quay thưởng</Button>
+            <Button type="link" size='large' disabled={playing || listLuckyUser?.length >= 13} onClick={() => handleClickStart()}>Quay thưởng</Button>
           </div>
 
         </div>
         <div className="list-lucky-user">
           <div className='title'>Danh sách trúng thưởng</div>
           <div className="list-user">
-            {listLuckyUser?.length > 0 ? listLuckyUser?.map((luckyUser, index) => {
+            {/* {listLuckyUser?.length > 0 ? listLuckyUser?.map((luckyUser, index) => {
               const [Ten, Ho, ...Dem] = luckyUser?.FullName?.split(' ') || [];
+              const Account = luckyUser?.Email?.split('@')[0];
               return <div className="user-lucky" key={luckyUser?.Id}>
                 <div className="stt">{index + 1}</div>
-                <div className='user-name'>{Ho + " " + Dem + " " + Ten}</div>
+                <div className='user-name'>{Ho + " " + Dem + " " + Ten + " (" + Account + ")"}</div>
               </div>
-            }) : <></>}
+            }) : <></>} */}
+
+            <div className='each-prize'>
+              <div className="name-prize">
+                Giải đặc biệt
+              </div>
+              <div className='user-best-prize'>
+                {formatFullName(giaiThuong.giaidacbiet?.FullName)}
+              </div>
+            </div>
+            <div className='each-prize'>
+              <div className="name-prize">
+                Giải nhất
+              </div>
+              <div className='user-1st-prize'>
+                {formatFullName(giaiThuong.giainhat?.FullName)}
+              </div>
+            </div>
+            <div className='each-prize'>
+              <div className="name-prize">
+                Giải nhì
+              </div>
+              <div className='list-2th-prize'>
+                <div className='user-2th-prize'>{formatFullName(giaiThuong.giainhi1?.FullName)}</div>
+                <div className='user-2th-prize'>{formatFullName(giaiThuong.giainhi2?.FullName)}</div>
+              </div>
+            </div>
+            <div className='each-prize'>
+              <div className="name-prize">
+                Giải ba
+              </div>
+              <div className='list-3th-prize'>
+                <div className='user-3th-prize'>{formatFullName(giaiThuong.giaiba1?.FullName)}</div>
+                <div className='user-3th-prize'>{formatFullName(giaiThuong.giaiba2?.FullName)}</div>
+                <div className='user-3th-prize'>{formatFullName(giaiThuong.giaiba3?.FullName)}</div>
+              </div>
+            </div>
+            <div className='each-prize last-prize'>
+              <div className="name-prize">
+                Giải khuyến khích
+              </div>
+              <div className='list-last-prize'>
+                <div className='user-last-prize'>{formatFullName(giaiThuong.giaibon1?.FullName)}</div>
+                <div className='user-last-prize'>{formatFullName(giaiThuong.giaibon2?.FullName)}</div>
+                <div className='user-last-prize'>{formatFullName(giaiThuong.giaibon3?.FullName)}</div>
+                <div className='user-last-prize'>{formatFullName(giaiThuong.giaibon4?.FullName)}</div>
+                <div className='user-last-prize'>{formatFullName(giaiThuong.giaibon5?.FullName)}</div>
+                <div className='user-last-prize'>{formatFullName(giaiThuong.giaibon6?.FullName)}</div>
+              </div>
+            </div>
+
+
           </div>
 
           <div className="footer-action-reset">
@@ -223,7 +313,7 @@ function App() {
         <source src="./xsmb.mp3" type="audio/mpeg" />
         Your browser does not support the audio element.
       </audio>
-    </div>
+    </div >
   )
 }
 

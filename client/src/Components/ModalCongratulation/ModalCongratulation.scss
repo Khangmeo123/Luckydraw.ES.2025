@@ -32,13 +32,13 @@
             color: #000;
             font-weight: 500;
 
-            .wish-for-es {
-                font-size: 24px;
-                font-weight: 600;
-                color: #000;
-                margin-bottom: 10px;
-                white-space: pre-wrap;
-            }
+            // .wish-for-es {
+            //     font-size: 24px;
+            //     font-weight: 600;
+            //     color: #000;
+            //     margin-bottom: 10px;
+            //     white-space: pre-wrap;
+            // }
 
             .info-field {
                 margin-top: 12px;
@@ -51,10 +51,12 @@
             }
 
             .lucky-prize {
-                margin-top: 20px;
                 font-size: 20px;
                 width: 100%;
                 text-align: center;
+                color: red;
+                font-size: 23px;
+                font-weight: 600;
             }
         }
     }

@@ -79,25 +79,36 @@ app.get('/get-lucky-user', (req, res) => {
     const filePath = path.join(__dirname, 'Data2025/Data2025/Checkin_2025.xlsx');
     try {
         const dataAll = readExcelData(filePath);
-        fs.readFile('./SelectedUser.json', function(err, data) { 
-            const listSelectedUser  = JSON.parse(data);
+
+        fs.readFile('./LuckyUser.json', function(err, data) {
+
+            const listLuckyUser  = JSON.parse(data);
+            const listPize = ["4th","4th","4th","4th","4th","4th","3rd","3rd","3rd","2nd","2nd","1st","best"];
+            const currentPrize = listPize[listLuckyUser.length];
             if (err) throw err;
-            if(dataAll.length <= listSelectedUser.length) res.send("Tất cả đều đã được chọn!");
-            else {
-                const luckyUser = getRandomLuckyUser(dataAll,listSelectedUser);
-                res.json(luckyUser);
-                listSelectedUser.push(luckyUser);
-                dataJson = JSON.stringify(listSelectedUser);
-                fs.writeFile('./SelectedUser.json',dataJson, 'utf-8',
-                    (err) => {
-                        if (err) {
-                            console.log('Error writing file:', err);
-                        } else {
-                            console.log('Successfully wrote file');
-                    }
-                }
-            )}  
-        }); 
+            else{
+                fs.readFile('./SelectedUser.json', function(err, data) {
+                    const listSelectedUser  = JSON.parse(data);
+                    if (err) throw err;
+                    if(dataAll.length <= listSelectedUser.length) res.send("Tất cả đều đã được chọn!");
+                    else {
+                        const luckyUser = getRandomLuckyUser(dataAll,listSelectedUser);
+                        res.json({...luckyUser, Giai: currentPrize});
+                        listSelectedUser.push({...luckyUser, Giai: currentPrize});
+                        dataJson = JSON.stringify(listSelectedUser);
+                        fs.writeFile('./SelectedUser.json',dataJson, 'utf-8',
+                            (err) => {
+                                if (err) {
+                                    console.log('Error writing file:', err);
+                                } else {
+                                    console.log('Successfully wrote file');
+                            }
+                        }
+                    )}  
+                }); 
+            }
+            
+        });
     } catch (error) {
         res.status(500).send('Error reading Excel file');
     }
