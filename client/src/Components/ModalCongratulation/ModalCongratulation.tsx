@@ -109,7 +109,7 @@ function ModalCongratulation(props: ModalCongratulationProps) {
                                 Lời chúc:
                             </Col>
                             <Col span={16} className='info-user'>
-                                {"Chúc cho ES một năm 2025 thành công rực rỡ trên mọi mặt trận, chúc cho các ESer được thưởng thật nhiều <3"}
+                                {currentLuckyUser?.WishForES}
                             </Col>
                         </Row>
 
