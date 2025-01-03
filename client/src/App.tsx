@@ -243,7 +243,7 @@ function App() {
             }) : <></>} */}
 
             <div className='each-prize'>
-              <div className="name-prize">
+              <div className="name-prize" style={{ color: 'red' }}>
                 Giải đặc biệt
               </div>
               <div className='user-best-prize'>
