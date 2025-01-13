@@ -3,20 +3,18 @@ import { Col, Modal, Row } from 'antd';
 import React from 'react';
 import { DataUser } from '../../App';
 import "./ModalCongratulation.scss";
-interface ModalCongratulationProps {
+interface ModalViewCongratulationProps {
     isOpen?: boolean;
     setIsOpen?: (data: boolean) => void;
     currentLuckyUser?: DataUser;
-    handleSave?: () => void;
     handleCancel?: () => void;
 }
 
-function ModalCongratulation(props: ModalCongratulationProps) {
+function ModalViewCongratulation(props: ModalViewCongratulationProps) {
     const {
         isOpen,
         // setIsOpen,
         currentLuckyUser,
-        handleSave,
         handleCancel,
     } = props;
 
@@ -68,12 +66,12 @@ function ModalCongratulation(props: ModalCongratulationProps) {
             <Modal width={1000}
                 // title="Congratulations!"
                 open={isOpen}
-                onOk={handleSave}
                 onCancel={handleCancel}
-                className='modal-congratulation'
-                cancelText='Không nhận giải'
-                okText='Nhận giải'
+                className='modal-congratulation modal-congratulation-view'
+                cancelText='Đóng'
+                // footer={null}
                 closeIcon={null}
+
             >
                 <div className='modal-congratulation__content'>
                     <div className='avatar-block'>
@@ -118,4 +116,4 @@ function ModalCongratulation(props: ModalCongratulationProps) {
     );
 };
 
-export default ModalCongratulation;
+export default ModalViewCongratulation;

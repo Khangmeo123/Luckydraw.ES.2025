@@ -5,6 +5,7 @@ import React, { useEffect } from 'react';
 import './App.scss';
 import ModalCongratulation from './Components/ModalCongratulation/ModalCongratulation';
 import SpinName from './Components/SpinName';
+import ModalViewCongratulation from './Components/ModalCongratulation/ModalViewCongratulation';
 export interface DataUser {
   Id?: number;
   Email?: string;
@@ -33,6 +34,7 @@ function App() {
 
   const [openModal, setOpenModal] = React.useState<boolean>(false);
 
+  const [openViewModal, setOpenViewModal] = React.useState<boolean>(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loading, setLoading] = React.useState<boolean>(false);
 
@@ -45,7 +47,7 @@ function App() {
       return Ho;
     }
     if (part === 'Dem') {
-      return Dem.join(' ');
+      return Dem?.length > 0 ? Dem.join(' ') : "_";
     }
   }, []);
 
@@ -124,6 +126,7 @@ function App() {
               setFakingLuckyUser(luckyUser);
               setPlaying(false);
               setOpenModal(true);
+              (x as HTMLAudioElement)?.pause();
             }, 2000);
           }, 4000);
         }, 10000);
@@ -175,34 +178,30 @@ function App() {
 
   const giaiThuong = React.useMemo(() => {
     const giaidacbiet = listLuckyUser.filter(user => user.Giai === 'best')[0];
-    const giainhat = listLuckyUser.filter(user => user.Giai === '1st')[0];
     const giainhi1 = listLuckyUser.filter(user => user.Giai === '2nd')[0];
     const giainhi2 = listLuckyUser.filter(user => user.Giai === '2nd')[1];
     const giaiba1 = listLuckyUser.filter(user => user.Giai === '3rd')[0];
     const giaiba2 = listLuckyUser.filter(user => user.Giai === '3rd')[1];
     const giaiba3 = listLuckyUser.filter(user => user.Giai === '3rd')[2];
-    const giaibon1 = listLuckyUser.filter(user => user.Giai === '4th')[0];
-    const giaibon2 = listLuckyUser.filter(user => user.Giai === '4th')[1];
-    const giaibon3 = listLuckyUser.filter(user => user.Giai === '4th')[2];
-    const giaibon4 = listLuckyUser.filter(user => user.Giai === '4th')[3];
-    const giaibon5 = listLuckyUser.filter(user => user.Giai === '4th')[4];
-    const giaibon6 = listLuckyUser.filter(user => user.Giai === '4th')[5];
     return {
       giaidacbiet,
-      giainhat,
       giainhi1,
       giainhi2,
       giaiba1,
       giaiba2,
       giaiba3,
-      giaibon1,
-      giaibon2,
-      giaibon3,
-      giaibon4,
-      giaibon5,
-      giaibon6,
     }
-  }, [listLuckyUser])
+  }, [listLuckyUser]);
+
+  const handleClickView = (giai: DataUser) => {
+    setOpenViewModal(true);
+    setCurrentLuckyUser(giai);
+  }
+
+  const handleCloseView = () => {
+    setOpenViewModal(false);
+    setCurrentLuckyUser({});
+  }
 
 
   return (
@@ -226,36 +225,20 @@ function App() {
             </div>
           </div>
           <div className='random-button' >
-            <Button type="link" size='large' disabled={playing || listLuckyUser?.length >= 13} onClick={() => handleClickStart()}>Quay thưởng</Button>
+            <Button type="link" size='large' disabled={playing || listLuckyUser?.length >= 6} onClick={() => handleClickStart()}>Quay thưởng</Button>
           </div>
 
         </div>
         <div className="list-lucky-user">
           <div className='title'>Danh sách trúng thưởng</div>
           <div className="list-user">
-            {/* {listLuckyUser?.length > 0 ? listLuckyUser?.map((luckyUser, index) => {
-              const [Ten, Ho, ...Dem] = luckyUser?.FullName?.split(' ') || [];
-              const Account = luckyUser?.Email?.split('@')[0];
-              return <div className="user-lucky" key={luckyUser?.Id}>
-                <div className="stt">{index + 1}</div>
-                <div className='user-name'>{Ho + " " + Dem + " " + Ten + " (" + Account + ")"}</div>
-              </div>
-            }) : <></>} */}
 
             <div className='each-prize'>
               <div className="name-prize" style={{ color: 'red' }}>
                 Giải đặc biệt
               </div>
-              <div className='user-best-prize'>
+              <div className='user-best-prize' onClick={() => handleClickView(giaiThuong.giaidacbiet)}>
                 {formatFullName(giaiThuong.giaidacbiet?.FullName)}
-              </div>
-            </div>
-            <div className='each-prize'>
-              <div className="name-prize">
-                Giải nhất
-              </div>
-              <div className='user-1st-prize'>
-                {formatFullName(giaiThuong.giainhat?.FullName)}
               </div>
             </div>
             <div className='each-prize'>
@@ -263,8 +246,8 @@ function App() {
                 Giải nhì
               </div>
               <div className='list-2th-prize'>
-                <div className='user-2th-prize'>{formatFullName(giaiThuong.giainhi1?.FullName)}</div>
-                <div className='user-2th-prize'>{formatFullName(giaiThuong.giainhi2?.FullName)}</div>
+                <div className='user-2th-prize' onClick={() => handleClickView(giaiThuong.giainhi1)}>{formatFullName(giaiThuong.giainhi1?.FullName)}</div>
+                <div className='user-2th-prize' onClick={() => handleClickView(giaiThuong.giainhi2)}>{formatFullName(giaiThuong.giainhi2?.FullName)}</div>
               </div>
             </div>
             <div className='each-prize'>
@@ -272,26 +255,11 @@ function App() {
                 Giải ba
               </div>
               <div className='list-3th-prize'>
-                <div className='user-3th-prize'>{formatFullName(giaiThuong.giaiba1?.FullName)}</div>
-                <div className='user-3th-prize'>{formatFullName(giaiThuong.giaiba2?.FullName)}</div>
-                <div className='user-3th-prize'>{formatFullName(giaiThuong.giaiba3?.FullName)}</div>
+                <div className='user-3th-prize' onClick={() => handleClickView(giaiThuong.giaiba1)}>{formatFullName(giaiThuong.giaiba1?.FullName)}</div>
+                <div className='user-3th-prize' onClick={() => handleClickView(giaiThuong.giaiba2)}>{formatFullName(giaiThuong.giaiba2?.FullName)}</div>
+                <div className='user-3th-prize' onClick={() => handleClickView(giaiThuong.giaiba3)}>{formatFullName(giaiThuong.giaiba3?.FullName)}</div>
               </div>
             </div>
-            <div className='each-prize last-prize'>
-              <div className="name-prize">
-                Giải khuyến khích
-              </div>
-              <div className='list-last-prize'>
-                <div className='user-last-prize'>{formatFullName(giaiThuong.giaibon1?.FullName)}</div>
-                <div className='user-last-prize'>{formatFullName(giaiThuong.giaibon2?.FullName)}</div>
-                <div className='user-last-prize'>{formatFullName(giaiThuong.giaibon3?.FullName)}</div>
-                <div className='user-last-prize'>{formatFullName(giaiThuong.giaibon4?.FullName)}</div>
-                <div className='user-last-prize'>{formatFullName(giaiThuong.giaibon5?.FullName)}</div>
-                <div className='user-last-prize'>{formatFullName(giaiThuong.giaibon6?.FullName)}</div>
-              </div>
-            </div>
-
-
           </div>
 
           <div className="footer-action-reset">
@@ -309,6 +277,7 @@ function App() {
         </div>
       </div>
       <ModalCongratulation isOpen={openModal} currentLuckyUser={currentLuckyUser} handleSave={() => handleSave(currentLuckyUser)} handleCancel={() => handleCancel()} />
+      <ModalViewCongratulation isOpen={openViewModal} currentLuckyUser={currentLuckyUser} handleCancel={() => handleCloseView()} />
       <audio id="myAudio">
         <source src="./xsmb.mp3" type="audio/mpeg" />
         Your browser does not support the audio element.

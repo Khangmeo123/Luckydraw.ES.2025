@@ -83,7 +83,7 @@ app.get('/get-lucky-user', (req, res) => {
         fs.readFile('./LuckyUser.json', function(err, data) {
 
             const listLuckyUser  = JSON.parse(data);
-            const listPize = ["4th","4th","4th","4th","4th","4th","3rd","3rd","3rd","2nd","2nd","1st","best"];
+            const listPize = ["3rd","3rd","3rd","2nd","2nd","best"];
             const currentPrize = listPize[listLuckyUser.length];
             if (err) throw err;
             else{

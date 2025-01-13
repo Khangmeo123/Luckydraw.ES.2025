@@ -21,7 +21,7 @@
     height: 600px;
     display: flex;
     gap: 100px;
-    align-items: center;
+    align-items: start;
 
     .app-block-draw {
       width: 700px;
@@ -86,7 +86,7 @@
 
     .list-lucky-user {
       width: 800px;
-      height: 480px;
+      height: 350px;
       background-color: white;
       color: black;
       padding: 0px 20px 20px 20px;
@@ -165,6 +165,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
+
+            &:hover {
+              color: blue;
+              cursor: pointer;
+            }
           }
 
           .user-1st-prize {
@@ -176,6 +181,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
+
+            &:hover {
+              color: blue;
+              cursor: pointer;
+            }
           }
 
           &.last-prize {
@@ -203,6 +213,11 @@
                 color: rgb(51, 71, 71);
                 font-weight: 600;
                 font-size: 18px;
+
+                &:hover {
+                  color: blue;
+                  cursor: pointer;
+                }
               }
             }
           }
@@ -227,6 +242,11 @@
               color: rgb(51, 71, 71);
               font-weight: 600;
               font-size: 18px;
+
+              &:hover {
+                color: blue;
+                cursor: pointer;
+              }
             }
           }
 
@@ -249,6 +269,11 @@
               color: rgb(51, 71, 71);
               font-weight: 600;
               font-size: 18px;
+
+              &:hover {
+                color: blue;
+                cursor: pointer;
+              }
             }
           }
 
