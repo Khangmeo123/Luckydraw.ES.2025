@@ -91,7 +91,7 @@ function App() {
 
 
   const x = document.getElementById("myAudio");
-
+  const y = document.getElementById("myAudio2");
 
   const handleClickStart = React.useCallback(() => {
     axios.get("http://localhost:5000/get-lucky-user").then(response => {
@@ -127,12 +127,14 @@ function App() {
               setPlaying(false);
               setOpenModal(true);
               (x as HTMLAudioElement)?.pause();
+              (y as HTMLAudioElement).currentTime = 0;
+              (y as HTMLAudioElement)?.play();
             }, 2000);
           }, 4000);
-        }, 10000);
+        }, 10200);
       }
     })
-  }, [getPartName, x]);
+  }, [getPartName, x, y]);
 
   const handleSave = React.useCallback((luckyUser: DataUser) => {
     setLoading(true);
@@ -212,21 +214,19 @@ function App() {
       <div className='app-content'>
         <div className='app-block-draw'>
           <div className='app-block-name'>
-            <div className='app-block-each-name' style={{ borderColor: fakingLuckyUser?.Ho ? 'orange' : 'gray' }}>
+            <div className='app-block-each-name' style={{ borderColor: fakingLuckyUser?.Ho ? '#24e0ff' : 'gray' }}>
               <div className='draw-name'>
                 <SpinName playing={playing} listData={listHo} valueSelected={fakingLuckyUser?.Ho} placeholder='Họ' />
               </div>
             </div>
-            <div className='app-block-each-name' style={{ borderColor: fakingLuckyUser?.Dem ? 'orange' : 'gray' }}>
+            <div className='app-block-each-name' style={{ borderColor: fakingLuckyUser?.Dem ? '#24e0ff' : 'gray' }}>
               <div className='draw-name'> <SpinName playing={playing} listData={listDem} valueSelected={fakingLuckyUser?.Dem} placeholder="Đệm" /></div>
             </div>
-            <div className='app-block-each-name' style={{ borderColor: fakingLuckyUser?.Ten ? 'orange' : 'gray' }}>
+            <div className='app-block-each-name' style={{ borderColor: fakingLuckyUser?.Ten ? '#24e0ff' : 'gray' }}>
               <div className='draw-name'><SpinName playing={playing} listData={listTen} valueSelected={fakingLuckyUser?.Ten} placeholder="Tên" /></div>
             </div>
           </div>
-          <div className='random-button' >
-            <Button type="link" size='large' disabled={playing || listLuckyUser?.length >= 6} onClick={() => handleClickStart()}>Quay thưởng</Button>
-          </div>
+
 
         </div>
         <div className="list-lucky-user">
@@ -273,13 +273,21 @@ function App() {
             >
               <Button danger>Reset</Button>
             </Popconfirm>
+
+            <div className='random-button' >
+              <Button type="primary" size='large' disabled={playing || listLuckyUser?.length >= 6} onClick={() => handleClickStart()}>Quay thưởng</Button>
+            </div>
           </div>
         </div>
       </div>
       <ModalCongratulation isOpen={openModal} currentLuckyUser={currentLuckyUser} handleSave={() => handleSave(currentLuckyUser)} handleCancel={() => handleCancel()} />
       <ModalViewCongratulation isOpen={openViewModal} currentLuckyUser={currentLuckyUser} handleCancel={() => handleCloseView()} />
       <audio id="myAudio">
-        <source src="./xsmb.mp3" type="audio/mpeg" />
+        <source src="./Bia.mp3" type="audio/mpeg" />
+        Your browser does not support the audio element.
+      </audio>
+      <audio id="myAudio2">
+        <source src="./Votay.mp3" type="audio/mpeg" />
         Your browser does not support the audio element.
       </audio>
     </div >
