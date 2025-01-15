@@ -230,7 +230,7 @@ function App() {
 
         </div>
         <div className="list-lucky-user">
-          <div className='title'>Danh sách trúng thưởng</div>
+          <div className='title'>DANH SÁCH TRÚNG THƯỞNG</div>
           <div className="list-user">
 
             <div className='each-prize'>

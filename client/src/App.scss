@@ -3,13 +3,13 @@
   height: 100vh;
   overflow: hidden;
   display: flex;
-  align-items: center;
+  align-items: start;
   justify-content: center;
 
   .app-background {
     width: 100vw;
     height: 100vh;
-    background-image: url("./assets/background.png");
+    background-image: url("./assets/background.jpg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -17,19 +17,19 @@
 
   .app-content {
     position: absolute;
-    width: 1600px;
-    height: 600px;
+    width: 1500px;
     display: flex;
-    gap: 100px;
     align-items: start;
+    justify-content: space-between;
 
     .app-block-draw {
-      width: 700px;
+      width: 600px;
       height: 600px;
+      margin-top: 200px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: start;
 
       .app-block-name {
         width: 100%;
@@ -40,7 +40,7 @@
         justify-content: space-between;
 
         .app-block-each-name {
-          width: 200px;
+          width: 180px;
           height: 100%;
           background-color: white;
           border-radius: 40px;
@@ -57,7 +57,7 @@
       }
 
       .random-button {
-        margin-top: 200px;
+        margin-top: 300px;
         font-size: 23px;
         // height: 56px;
         font-weight: 600;
@@ -85,7 +85,7 @@
     }
 
     .list-lucky-user {
-      width: 800px;
+      width: 600px;
       height: 350px;
       background-color: white;
       color: black;
@@ -95,13 +95,15 @@
       -webkit-box-shadow: 9px 9px 39px -1px rgba(40, 66, 238, 0.78);
       -moz-box-shadow: 9px 9px 39px -1px rgba(40, 66, 238, 0.78);
       border: 8px solid orange;
+      margin-top: 200px;
 
       .title {
         text-align: center;
         font-size: 30px;
         font-weight: 600;
         margin-top: 20px;
-        text-shadow: 3px 3px 2px rgba(212, 50, 50, 0.63);
+        color: RED;
+        text-shadow: 2px 2px 2px rgba(212, 50, 50, 0.63);
       }
 
       .list-user {

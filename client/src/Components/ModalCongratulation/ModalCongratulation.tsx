@@ -74,6 +74,7 @@ function ModalCongratulation(props: ModalCongratulationProps) {
                 cancelText='Không nhận giải'
                 okText='Nhận giải'
                 closeIcon={null}
+                maskClosable={false}
             >
                 <div className='modal-congratulation__content'>
                     <div className='avatar-block'>
