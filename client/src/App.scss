@@ -3,7 +3,7 @@
   height: 100vh;
   overflow: hidden;
   display: flex;
-  align-items: start;
+  align-items: center;
   justify-content: center;
 
   .app-background {
@@ -19,13 +19,13 @@
     position: absolute;
     width: 1500px;
     display: flex;
-    align-items: start;
+    align-items: center;
     justify-content: space-between;
 
     .app-block-draw {
       width: 600px;
-      height: 600px;
-      margin-top: 130px;
+      height: 700px;
+      margin-top: 80px;
       margin-left: 200px;
       display: flex;
       flex-direction: column;
@@ -60,6 +60,7 @@
     }
 
     .list-lucky-user {
+      margin-top: 500px;
       width: 600px;
       height: 350px;
       background-color: white;
@@ -70,7 +71,6 @@
       -webkit-box-shadow: 9px 9px 39px -1px rgba(40, 66, 238, 0.78);
       -moz-box-shadow: 9px 9px 39px -1px rgba(40, 66, 238, 0.78);
       border: 8px solid #34e0ff;
-      margin-top: 170px;
 
       .title {
         text-align: center;
