@@ -48,14 +48,16 @@ function ModalViewCongratulation(props: ModalViewCongratulationProps) {
 
     const formatPrize = React.useCallback((prize?: string) => {
         switch (prize) {
-            case 'best':
-                return 'Giải đặc biệt';
-            case '2nd':
-                return 'Giải nhì';
-            case '3rd':
-                return 'Giải ba';
+            case '5M':
+                return 'Giải 5M';
+            case '2M':
+                return 'Giải 2M';
+            case '1M':
+                return 'Giải 1M';
+            case '500k':
+                return 'Giải 500k';
             default:
-                return 'Giải ba';
+                return prize;
         }
     }, []);
 

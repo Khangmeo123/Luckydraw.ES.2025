@@ -179,19 +179,15 @@ function App() {
   };
 
   const giaiThuong = React.useMemo(() => {
-    const giaidacbiet = listLuckyUser.filter(user => user.Giai === 'best')[0];
-    const giainhi1 = listLuckyUser.filter(user => user.Giai === '2nd')[0];
-    const giainhi2 = listLuckyUser.filter(user => user.Giai === '2nd')[1];
-    const giaiba1 = listLuckyUser.filter(user => user.Giai === '3rd')[0];
-    const giaiba2 = listLuckyUser.filter(user => user.Giai === '3rd')[1];
-    const giaiba3 = listLuckyUser.filter(user => user.Giai === '3rd')[2];
+    const giai5M = listLuckyUser.filter(user => user.Giai === '5M')[0];
+    const danhSachGiai2M = listLuckyUser.filter(user => user.Giai === '2M');
+    const danhSachGiai1M = listLuckyUser.filter(user => user.Giai === '1M');
+    const danhSachGiai500k = listLuckyUser.filter(user => user.Giai === '500k');
     return {
-      giaidacbiet,
-      giainhi1,
-      giainhi2,
-      giaiba1,
-      giaiba2,
-      giaiba3,
+      giai5M,
+      danhSachGiai2M,
+      danhSachGiai1M,
+      danhSachGiai500k,
     }
   }, [listLuckyUser]);
 
@@ -235,29 +231,50 @@ function App() {
 
             <div className='each-prize'>
               <div className="name-prize" style={{ color: 'red' }}>
-                Giải đặc biệt
+                Giải 5M
               </div>
-              <div className='user-best-prize' onClick={() => handleClickView(giaiThuong.giaidacbiet)}>
-                {formatFullName(giaiThuong.giaidacbiet?.FullName)}
-              </div>
-            </div>
-            <div className='each-prize'>
-              <div className="name-prize">
-                Giải nhì
-              </div>
-              <div className='list-2th-prize'>
-                <div className='user-2th-prize' onClick={() => handleClickView(giaiThuong.giainhi1)}>{formatFullName(giaiThuong.giainhi1?.FullName)}</div>
-                <div className='user-2th-prize' onClick={() => handleClickView(giaiThuong.giainhi2)}>{formatFullName(giaiThuong.giainhi2?.FullName)}</div>
+              <div className='user-prize-list user-best-prize-container'>
+                {giaiThuong.giai5M && (
+                  <div className='winner-tag' onClick={() => handleClickView(giaiThuong.giai5M)}>
+                    {formatFullName(giaiThuong.giai5M?.FullName)}
+                  </div>
+                )}
               </div>
             </div>
             <div className='each-prize'>
               <div className="name-prize">
-                Giải ba
+                Giải 2M
               </div>
-              <div className='list-3th-prize'>
-                <div className='user-3th-prize' onClick={() => handleClickView(giaiThuong.giaiba1)}>{formatFullName(giaiThuong.giaiba1?.FullName)}</div>
-                <div className='user-3th-prize' onClick={() => handleClickView(giaiThuong.giaiba2)}>{formatFullName(giaiThuong.giaiba2?.FullName)}</div>
-                <div className='user-3th-prize' onClick={() => handleClickView(giaiThuong.giaiba3)}>{formatFullName(giaiThuong.giaiba3?.FullName)}</div>
+              <div className='user-prize-list'>
+                {giaiThuong.danhSachGiai2M.map((user, index) => (
+                  <div key={index} className='winner-tag' onClick={() => handleClickView(user)}>
+                    {formatFullName(user?.FullName)}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className='each-prize'>
+              <div className="name-prize">
+                Giải 1M
+              </div>
+              <div className='user-prize-list'>
+                {giaiThuong.danhSachGiai1M.map((user, index) => (
+                  <div key={index} className='winner-tag' onClick={() => handleClickView(user)}>
+                    {formatFullName(user?.FullName)}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className='each-prize'>
+              <div className="name-prize">
+                Giải 500k
+              </div>
+              <div className='user-prize-list'>
+                {giaiThuong.danhSachGiai500k.map((user, index) => (
+                  <div key={index} className='winner-tag' onClick={() => handleClickView(user)}>
+                    {formatFullName(user?.FullName)}
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -275,7 +292,7 @@ function App() {
             </Popconfirm>
 
             <div className='random-button' >
-              <Button type="primary" size='large' disabled={playing || listLuckyUser?.length >= 6} onClick={() => handleClickStart()}>Quay thưởng</Button>
+              <Button type="primary" size='large' disabled={playing || listLuckyUser?.length >= 36} onClick={() => handleClickStart()}>Quay thưởng</Button>
             </div>
           </div>
         </div>
