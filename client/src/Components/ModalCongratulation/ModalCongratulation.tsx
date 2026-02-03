@@ -21,27 +21,6 @@ function ModalCongratulation(props: ModalCongratulationProps) {
     } = props;
 
 
-    function excelDateToJSDate(excelDate: number) {
-        // Kiểm tra xem có phải là số hay không
-        if (typeof excelDate !== 'number') {
-            return "Dữ liệu không hợp lệ. Vui lòng nhập một số.";
-        }
-        // Hệ thống ngày 1900
-        const excelEpoch = new Date(1899, 11, 31); // 0/1/1900
-        const excelEpochMilliseconds = excelEpoch.getTime();
-
-        // Excel đôi khi tính sai ngày nhuận, cần trừ đi 1 ngày nếu sau ngày 28/2/1900
-        if (excelDate > 60) {
-            excelDate -= 1;
-        }
-
-        const milliseconds = (excelDate - 1) * 24 * 60 * 60 * 1000;
-        const jsDate = new Date(excelEpochMilliseconds + milliseconds);
-
-        return jsDate;
-    }
-
-
     const formatPrize = React.useCallback((prize?: string) => {
         switch (prize) {
             case '5M':
@@ -75,7 +54,7 @@ function ModalCongratulation(props: ModalCongratulationProps) {
             >
                 <div className='modal-congratulation__content'>
                     <div className='avatar-block'>
-                        <img src={`./Data2025/${currentLuckyUser?.Image}`} alt='avatar' className='avatar' />
+                        <img src={`https://checkin-es.yep.io.vn${currentLuckyUser?.Avatar}`} alt='avatar' className='avatar' />
                     </div>
                     <div className='information-block'>
                         <div className='lucky-prize'>{formatPrize(currentLuckyUser?.Giai)}</div>

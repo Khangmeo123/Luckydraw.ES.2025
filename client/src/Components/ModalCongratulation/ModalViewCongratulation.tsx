@@ -54,6 +54,7 @@ function ModalViewCongratulation(props: ModalViewCongratulationProps) {
                 return prize;
         }
     }, []);
+    console.log("curent", currentLuckyUser)
 
 
 
@@ -71,7 +72,7 @@ function ModalViewCongratulation(props: ModalViewCongratulationProps) {
             >
                 <div className='modal-congratulation__content'>
                     <div className='avatar-block'>
-                        <img src={`./Data2025/${currentLuckyUser?.Avatar}`} alt='avatar' className='avatar' />
+                        <img src={`https://checkin-es.yep.io.vn${currentLuckyUser?.Avatar}`} alt='avatar' className='avatar' />
                     </div>
                     <div className='information-block'>
                         <div className='lucky-prize'>{formatPrize(currentLuckyUser?.Giai)}</div>

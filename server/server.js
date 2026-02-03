@@ -28,7 +28,8 @@ const readExcelData = (filePath) => {
         Account: item.ACCOUNT || item.Account,
         Avatar: item.IMAGE || item.Avatar,
         WishForES: item.WISH || item.WishForES,
-        Department: item.DEPARTMENT
+        Department: item.DEPARTMENT,
+        checkedIn: item.checkedin === 'YES' ? true : false
     }));
 };
 
@@ -52,7 +53,8 @@ app.get('/list-user', (req, res) => {
     const filePath = path.join(__dirname, 'Final_Checkin_Report.xlsx');
     try {
         const data = readExcelData(filePath);
-        res.json(data);
+        const listUserCheckedIn = data.filter(p => p.checkedIn);
+        res.json(listUserCheckedIn);
     } catch (error) {
         res.status(500).send('Error reading Excel file');
     }
@@ -89,6 +91,7 @@ app.get('/get-lucky-user', (req, res) => {
     const filePath = path.join(__dirname, 'Final_Checkin_Report.xlsx');
     try {
         const dataAll = readExcelData(filePath);
+        const listUserCheckedIn = dataAll.filter(p => p.checkedIn);
 
         fs.readFile('./LuckyUser.json', function(err, data) {
 
@@ -105,9 +108,9 @@ app.get('/get-lucky-user', (req, res) => {
                 fs.readFile('./SelectedUser.json', function(err, data) {
                     const listSelectedUser  = JSON.parse(data);
                     if (err) throw err;
-                    if(dataAll.length <= listSelectedUser.length) res.send("Tất cả đều đã được chọn!");
+                    if(listUserCheckedIn.length <= listSelectedUser.length) res.send("Tất cả đều đã được chọn!");
                     else {
-                        const luckyUser = getRandomLuckyUser(dataAll,listSelectedUser);
+                        const luckyUser = getRandomLuckyUser(listUserCheckedIn,listSelectedUser);
                         res.json({...luckyUser, Giai: currentPrize});
                         listSelectedUser.push({...luckyUser, Giai: currentPrize});
                         dataJson = JSON.stringify(listSelectedUser);
