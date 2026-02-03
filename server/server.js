@@ -86,23 +86,26 @@ app.post('/update-lucky-user', (req, res) => {
         res.status(500).send('Error updating');
     }
 });
+    function toBoolean(value) {
+    return value === true || value === 'true'
+    }
 
 app.get('/get-lucky-user', (req, res) => {
     const filePath = path.join(__dirname, 'Final_Checkin_Report.xlsx');
     try {
         const dataAll = readExcelData(filePath);
-        const listUserCheckedIn = dataAll.filter(p => p.checkedIn);
+        const listUserCheckedIn = dataAll.filter(p => !p.checkedIn);
 
         fs.readFile('./LuckyUser.json', function(err, data) {
 
-            const listLuckyUser  = JSON.parse(data);
+            const listLuckyUser  = JSON.parse(data)?.filter(p => !toBoolean(p?.isDonate));
             const listPize = [
                 ...Array(20).fill("500k"),
                 ...Array(10).fill("1M"),
                 ...Array(5).fill("2M"),
                 "5M"
             ];
-            const currentPrize = listPize[listLuckyUser.length];
+            const currentPrize = req.query.prize || listPize[listLuckyUser.length];
             if (err) throw err;
             else{
                 fs.readFile('./SelectedUser.json', function(err, data) {
@@ -111,8 +114,8 @@ app.get('/get-lucky-user', (req, res) => {
                     if(listUserCheckedIn.length <= listSelectedUser.length) res.send("Tất cả đều đã được chọn!");
                     else {
                         const luckyUser = getRandomLuckyUser(listUserCheckedIn,listSelectedUser);
-                        res.json({...luckyUser, Giai: currentPrize});
-                        listSelectedUser.push({...luckyUser, Giai: currentPrize});
+                        res.json({...luckyUser, Giai: currentPrize, isDonate: req.query.isDonate});
+                        listSelectedUser.push({...luckyUser, Giai: currentPrize, isDonate: req.query.isDonate});
                         dataJson = JSON.stringify(listSelectedUser);
                         fs.writeFile('./SelectedUser.json',dataJson, 'utf-8',
                             (err) => {
