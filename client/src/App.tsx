@@ -15,6 +15,8 @@ export interface DataUser {
   Giai?: string;
   Checkin?: number;
   Checkout?: number;
+  Department?: string;
+  Image?: string;
 }
 
 function App() {
@@ -39,7 +41,11 @@ function App() {
   const [loading, setLoading] = React.useState<boolean>(false);
 
   const getPartName = React.useCallback((fullName?: string, part?: string) => {
-    const [Ten, Ho, ...Dem] = fullName?.split(' ') || [];
+    const fullNameSplit = fullName?.split(' ') || [];
+    const fullNameLength = fullNameSplit.length;
+    const Ho = fullNameSplit[0];
+    const Ten = fullNameSplit[fullNameLength - 1];
+    const Dem = fullNameSplit.slice(1, fullNameLength - 1);
     if (part === 'Ten') {
       return Ten;
     }
@@ -51,12 +57,6 @@ function App() {
     }
   }, []);
 
-  const formatFullName = React.useCallback((fullName?: string) => {
-    if (fullName?.length) {
-      const [Ten, Ho, ...Dem] = fullName?.split(' ') || [];
-      return Ho + " " + `${Dem?.length > 1 ? Dem.join(' ') : Dem}` + " " + Ten;
-    }
-  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -66,7 +66,11 @@ function App() {
       const listDemTmp: string[] = [];
       const listTenTmp: string[] = [];
       data.map((user: DataUser) => {
-        const [Ten, Ho, ...Dem] = user.FullName?.split(' ') || [];
+        const fullNameSplit = user.FullName?.split(' ') || [];
+        const fullNameLength = fullNameSplit.length;
+        const Ho = fullNameSplit[0];
+        const Ten = fullNameSplit[fullNameLength - 1];
+        const Dem = fullNameSplit.slice(1, fullNameLength - 1);
         if (Ho && !listHoTmp.includes(Ho)) {
           listHoTmp.push(Ho);
         }
@@ -236,7 +240,7 @@ function App() {
               <div className='user-prize-list user-best-prize-container'>
                 {giaiThuong.giai5M && (
                   <div className='winner-tag' onClick={() => handleClickView(giaiThuong.giai5M)}>
-                    {formatFullName(giaiThuong.giai5M?.FullName)}
+                    {giaiThuong.giai5M?.FullName}
                   </div>
                 )}
               </div>
@@ -248,7 +252,7 @@ function App() {
               <div className='user-prize-list'>
                 {giaiThuong.danhSachGiai2M.map((user, index) => (
                   <div key={index} className='winner-tag' onClick={() => handleClickView(user)}>
-                    {formatFullName(user?.FullName)}
+                    {user?.FullName}
                   </div>
                 ))}
               </div>
@@ -260,7 +264,7 @@ function App() {
               <div className='user-prize-list'>
                 {giaiThuong.danhSachGiai1M.map((user, index) => (
                   <div key={index} className='winner-tag' onClick={() => handleClickView(user)}>
-                    {formatFullName(user?.FullName)}
+                    {user?.FullName}
                   </div>
                 ))}
               </div>
@@ -272,7 +276,7 @@ function App() {
               <div className='user-prize-list'>
                 {giaiThuong.danhSachGiai500k.map((user, index) => (
                   <div key={index} className='winner-tag' onClick={() => handleClickView(user)}>
-                    {formatFullName(user?.FullName)}
+                    {user?.FullName}
                   </div>
                 ))}
               </div>

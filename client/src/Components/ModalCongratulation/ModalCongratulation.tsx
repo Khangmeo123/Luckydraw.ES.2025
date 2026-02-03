@@ -41,12 +41,6 @@ function ModalCongratulation(props: ModalCongratulationProps) {
         return jsDate;
     }
 
-    const formatFullName = React.useCallback((fullName?: string) => {
-        if (fullName?.length) {
-            const [Ten, Ho, ...Dem] = fullName?.split(' ') || [];
-            return Ho + " " + `${Dem?.length > 1 ? Dem.join(' ') : Dem}` + " " + Ten;
-        }
-    }, []);
 
     const formatPrize = React.useCallback((prize?: string) => {
         switch (prize) {
@@ -63,6 +57,7 @@ function ModalCongratulation(props: ModalCongratulationProps) {
         }
     }, []);
 
+    console.log("curreentLuckyUser", currentLuckyUser)
 
 
     return (
@@ -80,7 +75,7 @@ function ModalCongratulation(props: ModalCongratulationProps) {
             >
                 <div className='modal-congratulation__content'>
                     <div className='avatar-block'>
-                        <img src={`./Data2025/${currentLuckyUser?.Avatar}`} alt='avatar' className='avatar' />
+                        <img src={`./Data2025/${currentLuckyUser?.Image}`} alt='avatar' className='avatar' />
                     </div>
                     <div className='information-block'>
                         <div className='lucky-prize'>{formatPrize(currentLuckyUser?.Giai)}</div>
@@ -90,7 +85,7 @@ function ModalCongratulation(props: ModalCongratulationProps) {
                                 Chúc mừng:
                             </Col>
                             <Col span={16} className='info-user'>
-                                {formatFullName(currentLuckyUser?.FullName)}
+                                {currentLuckyUser?.FullName}
                             </Col>
                             <Col span={8} className='info-field'>
                                 Email:
@@ -99,10 +94,10 @@ function ModalCongratulation(props: ModalCongratulationProps) {
                                 {currentLuckyUser?.Email}
                             </Col>
                             <Col span={8} className='info-field'>
-                                Thời gian checkin:
+                                Phòng:
                             </Col>
                             <Col span={16} className='info-user'>
-                                {excelDateToJSDate(currentLuckyUser?.Checkin || 0)?.toLocaleString()}
+                                {currentLuckyUser?.Department}
                             </Col>
                             <Col span={8} className='info-field'>
                                 Lời chúc:

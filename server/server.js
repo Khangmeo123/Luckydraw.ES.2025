@@ -19,7 +19,17 @@ const readExcelData = (filePath) => {
     const workbook = xlsx.readFile(filePath);
     const sheetName = workbook.SheetNames[0];
     const worksheet = workbook.Sheets[sheetName];
-    return xlsx.utils.sheet_to_json(worksheet);
+    const data = xlsx.utils.sheet_to_json(worksheet);
+    // Normalize data keys to match Frontend expectations
+    return data.map(item => ({
+        Id: item.ID || item.Id,
+        FullName: item.FULLNAME || item.FullName,
+        Email: item.EMAIL || item.Email,
+        Account: item.ACCOUNT || item.Account,
+        Avatar: item.IMAGE || item.Avatar,
+        WishForES: item.WISH || item.WishForES,
+        Department: item.DEPARTMENT
+    }));
 };
 
 function getRandomLuckyUser(allData,selectedData) {
@@ -39,7 +49,7 @@ function getRandomLuckyUser(allData,selectedData) {
 
 // // API endpoint to get data from Excel file
 app.get('/list-user', (req, res) => {
-    const filePath = path.join(__dirname, 'Data2025/Data2025/Checkin_2025.xlsx');
+    const filePath = path.join(__dirname, 'Final_Checkin_Report.xlsx');
     try {
         const data = readExcelData(filePath);
         res.json(data);
@@ -76,7 +86,7 @@ app.post('/update-lucky-user', (req, res) => {
 });
 
 app.get('/get-lucky-user', (req, res) => {
-    const filePath = path.join(__dirname, 'Data2025/Data2025/Checkin_2025.xlsx');
+    const filePath = path.join(__dirname, 'Final_Checkin_Report.xlsx');
     try {
         const dataAll = readExcelData(filePath);
 

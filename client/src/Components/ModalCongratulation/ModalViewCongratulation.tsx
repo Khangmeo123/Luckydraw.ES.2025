@@ -39,12 +39,6 @@ function ModalViewCongratulation(props: ModalViewCongratulationProps) {
         return jsDate;
     }
 
-    const formatFullName = React.useCallback((fullName?: string) => {
-        if (fullName?.length) {
-            const [Ten, Ho, ...Dem] = fullName?.split(' ') || [];
-            return Ho + " " + `${Dem?.length > 1 ? Dem.join(' ') : Dem}` + " " + Ten;
-        }
-    }, []);
 
     const formatPrize = React.useCallback((prize?: string) => {
         switch (prize) {
@@ -87,7 +81,7 @@ function ModalViewCongratulation(props: ModalViewCongratulationProps) {
                                 Chúc mừng:
                             </Col>
                             <Col span={16} className='info-user'>
-                                {formatFullName(currentLuckyUser?.FullName)}
+                                {currentLuckyUser?.FullName}
                             </Col>
                             <Col span={8} className='info-field'>
                                 Email:
@@ -96,10 +90,10 @@ function ModalViewCongratulation(props: ModalViewCongratulationProps) {
                                 {currentLuckyUser?.Email}
                             </Col>
                             <Col span={8} className='info-field'>
-                                Thời gian checkin:
+                                Phòng:
                             </Col>
                             <Col span={16} className='info-user'>
-                                {excelDateToJSDate(currentLuckyUser?.Checkin || 0)?.toLocaleString()}
+                                {currentLuckyUser?.Department}
                             </Col>
                             <Col span={8} className='info-field'>
                                 Lời chúc:
